@@ -24,6 +24,6 @@ jobs:
         with:
           octaneUrl: -----
           octaneSharedSpace: 1
-          ocaneWorkspace: 12
+          octaneWorkspace: 12
           octaneClientId: dddd
           octaneClientSecret: dddd
