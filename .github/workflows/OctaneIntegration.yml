@@ -21,10 +21,10 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: gitHubActionsIntegration
         with:
-          octaneUrl: 'https://sec-pen-test.octane.admlabs.aws.swinfra.net:8443'
+          octaneUrl: 'http://localhost:8080/dev'
           octaneSharedSpace: 1001
           octaneWorkspace: 1002
           octaneClientId: ${{secrets.ALM_OCTANE_CLIENT_ID}}
           octaneClientSecret: ${{secrets.ALM_OCTANE_CLIENT_SECRET}}
           githubToken: ${{secrets.GITHUB_TOKEN}}
-          serverBaseUrl: https://github.com/madaC/Actions
+          serverBaseUrl: https://github.com/TiutiuMadalin/testGithubActions
