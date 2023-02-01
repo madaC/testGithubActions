@@ -16,7 +16,7 @@ jobs:
         - name: Build and Run Tests
           run: mvn --batch-mode --update-snapshots verify
         - name: JUnit Report Action
-          uses: mikepenz/action-junit-report@v3.7.1
+          uses: mikepenz/action-junit-report@v3
           with:
             report_paths: '**/target/*/*test*.xml'
 
