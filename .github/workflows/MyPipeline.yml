@@ -14,7 +14,8 @@ jobs:
             java-version: '11'
             distribution: 'temurin'
         - run: mvn --batch-mode --update-snapshots verify
-        - uses: mikepenz/action-junit-report@v3
+        - name: JUnit Report Action
+          uses: mikepenz/action-junit-report@v3.7.1
           if: always() # always run even if the previous step fails
             with:
               report_paths: '**/target/*/*test*.xml'
