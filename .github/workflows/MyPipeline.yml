@@ -15,9 +15,10 @@ jobs:
             distribution: 'temurin'
         - run: mvn --batch-mode --update-snapshots verify
         - run: mkdir reports && cp target/*/*test*.xml reports
-        - uses: actions/upload-artifact@v3
-          with:
-            name: Package
-            path: reports
+        - name: Publish Test Report
+          uses: mikepenz/action-junit-report@v3
+          if: always() # always run even if the previous step fails
+            with:
+              report_paths: '**/target/*/*test*.xml'
 
 
