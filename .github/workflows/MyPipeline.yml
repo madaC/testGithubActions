@@ -14,7 +14,7 @@ jobs:
             java-version: '11'
             distribution: 'temurin'
         - run: mvn --batch-mode --update-snapshots verify
-        - run: mkdir reports && cp target/*.xml reports
+        - run: mkdir reports && cp target/*.jar reports
         - uses: actions/upload-artifact@v3
           with:
             name: Package
