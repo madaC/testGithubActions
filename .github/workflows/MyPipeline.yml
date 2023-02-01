@@ -17,7 +17,7 @@ jobs:
           run: mvn --batch-mode --update-snapshots verify
         - name: JUnit Report Action
           uses: mikepenz/action-junit-report@v3.7.1
-            with:
-              report_paths: '**/target/*/*test*.xml'
+          with:
+            report_paths: '**/target/*/*test*.xml'
 
 
