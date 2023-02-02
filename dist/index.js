@@ -77166,11 +77166,9 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         const zip = new adm_zip_1.default(fileName);
         zip.extractAllTo(ARTIFACTS_DIR);
-        // fsExtra.rmSync(fileName);
+        fs_extra_1.default.rmSync(fileName);
     }));
-    const reportFiles = yield (0, globby_1.globby)(unitTestResultPattern, {
-        cwd: ARTIFACTS_DIR
-    });
+    const reportFiles = yield (0, globby_1.globby)(unitTestResultPattern);
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
     console.log('Converting and sending test results to ALM Octane...');
     reportFiles.forEach((reportFile) => __awaiter(void 0, void 0, void 0, function* () {
@@ -77182,7 +77180,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         });
         yield octaneClient_1.default.sendTestResult(convertedXML, serverId, jobId, buildId);
     }));
-    // fsExtra.emptyDirSync(ARTIFACTS_DIR);
+    fs_extra_1.default.emptyDirSync(ARTIFACTS_DIR);
 });
 exports.sendJUnitTestResults = sendJUnitTestResults;
 
