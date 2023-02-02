@@ -22,8 +22,8 @@ inputs:
   serverBaseUrl:
     description: 'URL of the organization/repository in GitHub'
     required: true
-  unitTestResultsGlobPattern:    
-    description: 'Pattern to search unit test result report files in artifacts',    
+  unitTestResultsGlobPattern:
+    description: 'Pattern to search unit test result report files in artifacts'
     required: false
 runs:
   using: 'node16'
