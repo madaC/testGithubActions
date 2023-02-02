@@ -77168,8 +77168,10 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         zip.extractAllTo(ARTIFACTS_DIR);
         fs_extra_1.default.rmSync(fileName);
     }));
+    const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
+    console.log(`Searching pattern in following directory: ${globSearchDestination}`);
     const reportFiles = (0, globby_1.globbySync)(unitTestResultPattern, {
-        cwd: `${process.cwd()}/${ARTIFACTS_DIR}`
+        cwd: globSearchDestination
     });
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
     console.log('Converting and sending test results to ALM Octane...');
