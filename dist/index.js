@@ -77169,7 +77169,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         fs_extra_1.default.rmSync(fileName);
     }));
     const reportFiles = (0, globby_1.globbySync)(unitTestResultPattern, {
-        cwd: `${process.cwd}/${ARTIFACTS_DIR}`
+        cwd: `${process.cwd()}/${ARTIFACTS_DIR}`
     });
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
     console.log('Converting and sending test results to ALM Octane...');
