@@ -77152,6 +77152,7 @@ const octaneClient_1 = __importDefault(__nccwpck_require__(18607));
 const config_1 = __importDefault(__nccwpck_require__(84561));
 const ARTIFACTS_DIR = './artifacts';
 const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, serverId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('Searching for test results...');
     const unitTestResultPattern = (0, config_1.default)().unitTestResultsGlobPattern;
     if (!unitTestResultPattern) {
         throw new Error('Unit Test Results file pattern is not configured!');
@@ -77160,6 +77161,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     fs_extra_1.default.ensureDirSync(ARTIFACTS_DIR);
     runArtifacts.forEach((artifact) => __awaiter(void 0, void 0, void 0, function* () {
         const fileName = `${ARTIFACTS_DIR}/${artifact.name}.zip`;
+        console.log(`Downloading artifact ${fileName}...`);
         const artifactZipBytes = yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id);
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         const zip = new adm_zip_1.default(fileName);
@@ -77169,6 +77171,8 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     const reportFiles = yield (0, globby_1.globby)(unitTestResultPattern, {
         cwd: ARTIFACTS_DIR
     });
+    console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
+    console.log('Converting and sending test results to ALM Octane...');
     reportFiles.forEach((reportFile) => __awaiter(void 0, void 0, void 0, function* () {
         const fileContent = fs_extra_1.default.readFileSync(reportFile, 'utf-8');
         const convertedXML = (0, alm_octane_test_result_convertion_1.convertJUnitXMLToOctaneXML)(fileContent, {
