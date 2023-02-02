@@ -77150,7 +77150,7 @@ const globby_1 = __nccwpck_require__(93271);
 const githubClient_1 = __importDefault(__nccwpck_require__(7415));
 const octaneClient_1 = __importDefault(__nccwpck_require__(18607));
 const config_1 = __importDefault(__nccwpck_require__(84561));
-const ARTIFACTS_DIR = './artifacts/';
+const ARTIFACTS_DIR = 'artifacts';
 const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, serverId) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('Searching for test results...');
     const unitTestResultPattern = (0, config_1.default)().unitTestResultsGlobPattern;
@@ -77160,7 +77160,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     const runArtifacts = yield githubClient_1.default.getWorkflowRunArtifacts(owner, repo, workflowRunId);
     fs_extra_1.default.ensureDirSync(ARTIFACTS_DIR);
     runArtifacts.forEach((artifact) => __awaiter(void 0, void 0, void 0, function* () {
-        const fileName = `${ARTIFACTS_DIR}${artifact.name}.zip`;
+        const fileName = `${ARTIFACTS_DIR}/${artifact.name}.zip`;
         console.log(`Downloading artifact ${fileName}...`);
         const artifactZipBytes = yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id);
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
