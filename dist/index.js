@@ -77168,7 +77168,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         zip.extractAllTo(ARTIFACTS_DIR);
         fs_extra_1.default.rmSync(fileName);
     }));
-    const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
+    const globSearchDestination = `${process.cwd()}\\${ARTIFACTS_DIR}`;
     console.log(`Searching pattern in following directory: ${globSearchDestination}`);
     const reportFiles = (0, globby_1.globbySync)(unitTestResultPattern, {
         cwd: globSearchDestination
