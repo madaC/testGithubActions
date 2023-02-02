@@ -77166,7 +77166,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         const zip = new adm_zip_1.default(fileName);
         zip.extractAllTo(ARTIFACTS_DIR);
-        fs_extra_1.default.rmSync(fileName);
+        // fsExtra.rmSync(fileName);
     }));
     const reportFiles = yield (0, globby_1.globby)(unitTestResultPattern, {
         cwd: ARTIFACTS_DIR
@@ -77182,7 +77182,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         });
         yield octaneClient_1.default.sendTestResult(convertedXML, serverId, jobId, buildId);
     }));
-    fs_extra_1.default.emptyDirSync(ARTIFACTS_DIR);
+    // fsExtra.emptyDirSync(ARTIFACTS_DIR);
 });
 exports.sendJUnitTestResults = sendJUnitTestResults;
 
