@@ -77160,8 +77160,8 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     fs_extra_1.default.ensureDirSync(ARTIFACTS_DIR);
     runArtifacts.forEach((artifact) => __awaiter(void 0, void 0, void 0, function* () {
         const fileName = `${ARTIFACTS_DIR}/${artifact.name}.zip`;
-        const artifactZipBytes = (yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id));
-        fs_extra_1.default.writeFileSync(fileName, artifactZipBytes);
+        const artifactZipBytes = yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id);
+        fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         const zip = new adm_zip_1.default(fileName);
         zip.extractAllTo(ARTIFACTS_DIR);
         fs_extra_1.default.rmSync(fileName);
