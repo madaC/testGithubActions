@@ -70174,7 +70174,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         fs_extra_1.default.chmodSync(fileName, 777);
         const zip = new adm_zip_1.default(fileName);
-        zip.extractAllTo(ARTIFACTS_DIR);
+        zip.extractAllTo(ARTIFACTS_DIR, true, true);
         fs_extra_1.default.rmSync(fileName);
     }));
     const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
