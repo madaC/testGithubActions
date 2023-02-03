@@ -70179,6 +70179,9 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     }));
     const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
     console.log(`Searching pattern in following directory: ${globSearchDestination}`);
+    const files = fs_extra_1.default.readdirSync(globSearchDestination);
+    console.log(files);
+    files.forEach((file) => __awaiter(void 0, void 0, void 0, function* () { return fs_extra_1.default.access(file, fs_extra_1.default.constants.R_OK, (err) => console.log(err ? false : true)); }));
     const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern, {
         cwd: globSearchDestination
     });
