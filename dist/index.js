@@ -72609,7 +72609,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     fs_extra_1.default.ensureDirSync(ARTIFACTS_DIR);
     for (const artifact of runArtifacts) {
         const fileName = `${ARTIFACTS_DIR}/${artifact.name}.zip`;
-        console.log(`Downloading artifact ${fileName}...`);
+        console.log(`Downloading artifact ${artifact.name}...`);
         const artifactZipBytes = yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id);
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         const zip = new adm_zip_1.default(fileName);
@@ -72617,7 +72617,6 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         fs_extra_1.default.rmSync(fileName);
     }
     const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
-    console.log(`Searching pattern in following directory: ${globSearchDestination}`);
     const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern, {
         cwd: globSearchDestination
     });
