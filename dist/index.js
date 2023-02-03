@@ -70173,12 +70173,14 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         const artifactZipBytes = yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id);
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
         const zip = new adm_zip_1.default(fileName);
-        zip.extractAllTo(ARTIFACTS_DIR);
+        zip.extractAllTo(ARTIFACTS_DIR, false, true);
         fs_extra_1.default.rmSync(fileName);
     }));
-    // const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
-    // console.log(`Searching pattern in following directory: ${globSearchDestination}`)
-    const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern);
+    const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
+    console.log(`Searching pattern in following directory: ${globSearchDestination}`);
+    const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern, {
+        cwd: globSearchDestination
+    });
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
     // console.log('Converting and sending test results to ALM Octane...');
     // reportFiles.forEach(async reportFile => {
