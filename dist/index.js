@@ -72624,7 +72624,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
     console.log('Converting and sending test results to ALM Octane...');
     for (const reportFile of reportFiles) {
-        const fileContent = fs_extra_1.default.readFileSync(reportFile, 'utf-8');
+        const fileContent = fs_extra_1.default.readFileSync(`${ARTIFACTS_DIR}/${reportFile}`, 'utf-8');
         const convertedXML = (0, alm_octane_test_result_convertion_1.convertJUnitXMLToOctaneXML)(fileContent, {
             server_id: serverId,
             build_id: buildId,
