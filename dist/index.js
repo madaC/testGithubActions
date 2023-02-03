@@ -70172,8 +70172,9 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         console.log(`Downloading artifact ${fileName}...`);
         const artifactZipBytes = yield githubClient_1.default.downloadArtifact(owner, repo, artifact.id);
         fs_extra_1.default.writeFileSync(fileName, Buffer.from(artifactZipBytes));
+        fs_extra_1.default.chmodSync(fileName, 777);
         const zip = new adm_zip_1.default(fileName);
-        zip.extractAllTo(ARTIFACTS_DIR, false, true);
+        zip.extractAllTo(ARTIFACTS_DIR);
         fs_extra_1.default.rmSync(fileName);
     }));
     const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
