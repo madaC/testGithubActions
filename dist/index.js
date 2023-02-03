@@ -72616,7 +72616,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
         zip.extractAllTo(ARTIFACTS_DIR);
         fs_extra_1.default.rmSync(fileName);
     }));
-    const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
+    const globSearchDestination = `glob:${process.cwd()}/${ARTIFACTS_DIR}`;
     console.log(`Searching pattern in following directory: ${globSearchDestination}`);
     const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern, { cwd: `${process.cwd()}/${ARTIFACTS_DIR}` });
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
