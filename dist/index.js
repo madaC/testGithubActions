@@ -72618,7 +72618,7 @@ const sendJUnitTestResults = (owner, repo, workflowRunId, buildId, jobId, server
     }));
     const globSearchDestination = `${process.cwd()}/${ARTIFACTS_DIR}`;
     console.log(`Searching pattern in following directory: ${globSearchDestination}`);
-    const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern, { cwd: ARTIFACTS_DIR });
+    const reportFiles = yield (0, glob_promise_1.default)(unitTestResultPattern, { cwd: `${process.cwd()}/${ARTIFACTS_DIR}` });
     console.log(`Found ${reportFiles.length} test results according to pattern '${unitTestResultPattern}'`);
     console.log('Converting and sending test results to ALM Octane...');
     reportFiles.forEach((reportFile) => __awaiter(void 0, void 0, void 0, function* () {
