@@ -4,14 +4,12 @@ on:
   workflow_run:
     workflows: [CI]
     types: [requested, completed]
-
-run-name: OctaneIntegration#${{github.event.action}}
 env: 
     NODE_TLS_REJECT_UNAUTHORIZED: 0
 jobs:
   octane_integration_job:
     runs-on: [self-hosted, java]
-    name: Octane Integration
+    name: OctaneIntegration#${{github.event.action}}#${{github.event.workflow_run.id}}
     steps:
       # To use this repository's private action,
       # you must check out the repository
