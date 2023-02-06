@@ -16,6 +16,7 @@ jobs:
       - run: mvn clean install
   test:
     name: Run Tests
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
