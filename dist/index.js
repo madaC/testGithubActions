@@ -72355,6 +72355,7 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
         case "requested" /* ActionsEventType.WORKFLOW_QUEUED */:
             const rootQueuedEvent = (0, ciEventsService_1.generateRootCiEvent)(event, pipelineData, "started" /* CiEventType.STARTED */);
             yield octaneClient_1.default.sendEvents([rootQueuedEvent], pipelineData.instanceId, pipelineData.baseUrl);
+            console.log(yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName));
             const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
             const since = new Date(octaneBuilds[1].start_time).getTime();
             if (octaneBuilds.length > 1) {
