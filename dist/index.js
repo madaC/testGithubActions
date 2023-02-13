@@ -72356,7 +72356,7 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
             const rootQueuedEvent = (0, ciEventsService_1.generateRootCiEvent)(event, pipelineData, "started" /* CiEventType.STARTED */);
             yield octaneClient_1.default.sendEvents([rootQueuedEvent], pipelineData.instanceId, pipelineData.baseUrl);
             const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
-            const since = new Date(octaneBuilds[1].start_time).getUTCMilliseconds();
+            const since = new Date(new Date(octaneBuilds[1].start_time).toUTCString()).getTime();
             console.log(`Injecting commits since ${new Date(since)}...`);
             if (octaneBuilds.length > 1) {
                 yield (0, scmDataService_1.sendScmData)(event, pipelineData, owner, repoName, since);
@@ -72690,9 +72690,11 @@ const sendScmData = (event, pipelineData, owner, repo, since) => __awaiter(void 
     for (const commitSha of commitShas) {
         gitHubCommits.push(yield githubClient_1.default.getCommit(owner, repo, commitSha));
     }
-    const scmData = yield getSCMData(event, branch, gitHubCommits);
-    console.log(`SCM data: ${util.inspect(scmData, false, null, true)}`);
-    yield octaneClient_1.default.sendScmData(scmData, pipelineData.instanceId, pipelineData.rootJobName, pipelineData.buildCiId);
+    if (gitHubCommits.length > 0) {
+        const scmData = yield getSCMData(event, branch, gitHubCommits);
+        console.log(`SCM data: ${util.inspect(scmData, false, null, true)}`);
+        yield octaneClient_1.default.sendScmData(scmData, pipelineData.instanceId, pipelineData.rootJobName, pipelineData.buildCiId);
+    }
 });
 exports.sendScmData = sendScmData;
 const getSCMData = (event, branch, gitHubCommits) => __awaiter(void 0, void 0, void 0, function* () {
