@@ -72356,7 +72356,7 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
             const rootQueuedEvent = (0, ciEventsService_1.generateRootCiEvent)(event, pipelineData, "started" /* CiEventType.STARTED */);
             yield octaneClient_1.default.sendEvents([rootQueuedEvent], pipelineData.instanceId, pipelineData.baseUrl);
             const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
-            const since = new Date(octaneBuilds[1].start_time).getTime();
+            const since = new Date(octaneBuilds[1].start_time).getUTCMilliseconds();
             console.log(`Injecting commits since ${new Date(since)}...`);
             if (octaneBuilds.length > 1) {
                 yield (0, scmDataService_1.sendScmData)(event, pipelineData, owner, repoName, since);
