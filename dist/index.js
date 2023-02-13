@@ -72355,9 +72355,9 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
         case "requested" /* ActionsEventType.WORKFLOW_QUEUED */:
             const rootQueuedEvent = (0, ciEventsService_1.generateRootCiEvent)(event, pipelineData, "started" /* CiEventType.STARTED */);
             yield octaneClient_1.default.sendEvents([rootQueuedEvent], pipelineData.instanceId, pipelineData.baseUrl);
-            console.log(yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName));
             const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
             const since = new Date(octaneBuilds[1].start_time).getTime();
+            console.log(`Injecting commits since ${new Date(since)}...`);
             if (octaneBuilds.length > 1) {
                 yield (0, scmDataService_1.sendScmData)(event, pipelineData, owner, repoName, since);
             }
@@ -72639,6 +72639,29 @@ exports.getPipelineData = getPipelineData;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -72656,9 +72679,11 @@ exports.sendScmData = void 0;
 const github_1 = __nccwpck_require__(95438);
 const githubClient_1 = __importDefault(__nccwpck_require__(7415));
 const octaneClient_1 = __importDefault(__nccwpck_require__(18607));
+const util = __importStar(__nccwpck_require__(47261));
 const sendScmData = (event, pipelineData, owner, repo, since) => __awaiter(void 0, void 0, void 0, function* () {
     const refComponents = github_1.context.ref.split('/');
     const branch = refComponents[refComponents.length - 1];
+    console.log(`Getting commits for branch ${branch} since ${since}...`);
     const commitShas = yield githubClient_1.default.getCommitIds(owner, repo, branch, since);
     console.log(`Commits: ${commitShas}`);
     const gitHubCommits = [];
@@ -72666,7 +72691,7 @@ const sendScmData = (event, pipelineData, owner, repo, since) => __awaiter(void 
         gitHubCommits.push(yield githubClient_1.default.getCommit(owner, repo, commitSha));
     }
     const scmData = yield getSCMData(event, branch, gitHubCommits);
-    console.log(`SCM data: ${scmData}`);
+    console.log(`SCM data: ${util.inspect(scmData, false, null, true)}`);
     yield octaneClient_1.default.sendScmData(scmData, pipelineData.instanceId, pipelineData.rootJobName, pipelineData.buildCiId);
 });
 exports.sendScmData = sendScmData;
@@ -72916,6 +72941,14 @@ module.exports = require("https");
 
 "use strict";
 module.exports = require("net");
+
+/***/ }),
+
+/***/ 47261:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:util");
 
 /***/ }),
 
