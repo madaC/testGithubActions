@@ -71987,7 +71987,7 @@ GitHubClient.getCommitIds = (owner, repo, branch, since) => __awaiter(void 0, vo
         owner,
         repo,
         sha: branch,
-        since: since.toString(),
+        since: since.toISOString(),
         per_page: 100
     }, response => response.data)).map(commit => commit.sha);
 });
@@ -72201,29 +72201,6 @@ exports["default"] = getConfig;
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -72246,7 +72223,6 @@ const pipelineDataService_1 = __nccwpck_require__(27726);
 const scmDataService_1 = __nccwpck_require__(39266);
 const testResultsService_1 = __nccwpck_require__(29058);
 const utils_1 = __nccwpck_require__(80239);
-const util = __importStar(__nccwpck_require__(47261));
 const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
     const startTime = new Date().getTime();
@@ -72377,12 +72353,11 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
     });
     switch (eventType) {
         case "requested" /* ActionsEventType.WORKFLOW_QUEUED */:
+            const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
             const rootQueuedEvent = (0, ciEventsService_1.generateRootCiEvent)(event, pipelineData, "started" /* CiEventType.STARTED */);
             yield octaneClient_1.default.sendEvents([rootQueuedEvent], pipelineData.instanceId, pipelineData.baseUrl);
-            const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
-            console.log(util.inspect(octaneBuilds, false, null, true));
-            const since = new Date(new Date(octaneBuilds[1].start_time).toUTCString()).getTime();
-            console.log(`Injecting commits since ${new Date(since)}...`);
+            const since = new Date(octaneBuilds[0].start_time);
+            console.log(`Injecting commits since ${since.toISOString()}...`);
             if (octaneBuilds.length > 1) {
                 yield (0, scmDataService_1.sendScmData)(event, pipelineData, owner, repoName, since);
             }
