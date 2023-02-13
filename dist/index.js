@@ -72152,7 +72152,7 @@ OctaneClient.getJobBuilds = (jobId) => __awaiter(void 0, void 0, void 0, functio
         .execute()).data;
 });
 OctaneClient.sendScmData = (scmData, instanceId, jobId, buildId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield _a.octane.executeCustomRequest(`/api/shared_spaces/${_a.config.octaneSharedSpace}/scm-commits?instance-id=${instanceId}&job-ci-id=${jobId}&build-ci-id=${buildId}`, alm_octane_js_rest_sdk_1.Octane.operationTypes.update, scmData);
+    yield _a.octane.executeCustomRequest(`/api/shared_spaces/${_a.config.octaneSharedSpace}/scm-commits?instance-id=${instanceId}&job-ci-id=${jobId}&build-ci-id=${buildId}`, alm_octane_js_rest_sdk_1.Octane.operationTypes.update, [scmData]);
 });
 
 
@@ -72218,6 +72218,7 @@ exports.handleEvent = void 0;
 const github_1 = __nccwpck_require__(95438);
 const githubClient_1 = __importDefault(__nccwpck_require__(7415));
 const octaneClient_1 = __importDefault(__nccwpck_require__(18607));
+const config_1 = __importDefault(__nccwpck_require__(84561));
 const ciEventsService_1 = __nccwpck_require__(76506);
 const pipelineDataService_1 = __nccwpck_require__(27726);
 const scmDataService_1 = __nccwpck_require__(39266);
@@ -72363,10 +72364,12 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
             yield pollForJobsOfTypeToFinish("requested" /* ActionsEventType.WORKFLOW_QUEUED */);
             const completedEvent = (0, ciEventsService_1.generateRootCiEvent)(event, pipelineData, "finished" /* CiEventType.FINISHED */);
             yield octaneClient_1.default.sendEvents([completedEvent], pipelineData.instanceId, pipelineData.baseUrl);
-            yield (0, testResultsService_1.sendJUnitTestResults)(owner, repoName, workflowRunId, pipelineData.buildCiId, pipelineData.rootJobName, pipelineData.instanceId);
+            if ((0, config_1.default)().unitTestResultsGlobPattern) {
+                yield (0, testResultsService_1.sendJUnitTestResults)(owner, repoName, workflowRunId, pipelineData.buildCiId, pipelineData.rootJobName, pipelineData.instanceId);
+            }
             const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
             if (octaneBuilds.length > 1) {
-                const since = new Date(octaneBuilds[1].start_time);
+                const since = new Date(octaneBuilds[2].start_time);
                 console.log(`Injecting commits since ${since}...`);
                 yield (0, scmDataService_1.sendScmData)(event, pipelineData, owner, repoName, since);
             }
@@ -72409,7 +72412,7 @@ const eventHandler_1 = __nccwpck_require__(97774);
     catch (error) {
         let msg;
         if (error.response) {
-            msg = `${error.response.status} - ${error.response.statusText}\nurl:${error.response.config.url} - ${error.response.config.method}\n${error.response.data.description_translated}`;
+            msg = `${error.response.status} - ${error.response.statusText}\nurl :${error.response.config.url} - ${error.response.config.method}\n${error.response.data.description_translated}`;
         }
         else {
             msg = error.message;
