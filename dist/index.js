@@ -72389,7 +72389,7 @@ const handleEvent = (event) => __awaiter(void 0, void 0, void 0, function* () {
             yield octaneClient_1.default.sendEvents([completedEvent], pipelineData.instanceId, pipelineData.baseUrl);
             yield (0, testResultsService_1.sendJUnitTestResults)(owner, repoName, workflowRunId, pipelineData.buildCiId, pipelineData.rootJobName, pipelineData.instanceId);
             const octaneBuilds = (yield octaneClient_1.default.getJobBuilds(pipelineData.rootJobName)).sort((build1, build2) => build2.start_time - build1.start_time);
-            const since = new Date(octaneBuilds[0].start_time);
+            const since = new Date(octaneBuilds[1].start_time);
             console.log(`Injecting commits since ${since}...`);
             if (octaneBuilds.length > 1) {
                 yield (0, scmDataService_1.sendScmData)(event, pipelineData, owner, repoName, since);
