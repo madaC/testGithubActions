@@ -72660,11 +72660,13 @@ const sendScmData = (event, pipelineData, owner, repo, since) => __awaiter(void 
     const refComponents = github_1.context.ref.split('/');
     const branch = refComponents[refComponents.length - 1];
     const commitShas = yield githubClient_1.default.getCommitIds(owner, repo, branch, since);
+    console.log(`Commits: ${commitShas}`);
     const gitHubCommits = [];
     for (const commitSha of commitShas) {
         gitHubCommits.push(yield githubClient_1.default.getCommit(owner, repo, commitSha));
     }
     const scmData = yield getSCMData(event, branch, gitHubCommits);
+    console.log(`SCM data: ${scmData}`);
     yield octaneClient_1.default.sendScmData(scmData, pipelineData.instanceId, pipelineData.rootJobName, pipelineData.buildCiId);
 });
 exports.sendScmData = sendScmData;
