@@ -72152,7 +72152,7 @@ OctaneClient.getJobBuilds = (jobId) => __awaiter(void 0, void 0, void 0, functio
         .execute()).data;
 });
 OctaneClient.sendScmData = (scmData, instanceId, jobId, buildId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield _a.octane.executeCustomRequest(`/api/shared_spaces/${_a.config.octaneSharedSpace}/scm-commits?instance-id=${instanceId}}&job-ci-id=${jobId}&build-ci-id=${buildId}`, alm_octane_js_rest_sdk_1.Octane.operationTypes.update, scmData);
+    yield _a.octane.executeCustomRequest(`/api/shared_spaces/${_a.config.octaneSharedSpace}/scm-commits?instance-id=${instanceId}}&job-ci-id=${jobId}&build-ci-id=${buildId}`, alm_octane_js_rest_sdk_1.Octane.operationTypes.update, [scmData]);
 });
 
 
