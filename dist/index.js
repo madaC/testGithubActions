@@ -72145,11 +72145,11 @@ OctaneClient.getSharedSpaceName = (sharedSpaceId) => __awaiter(void 0, void 0, v
     return (yield _a.octane.executeCustomRequest(`/api/shared_spaces?fields=name&query="id EQ ${sharedSpaceId}"`, alm_octane_js_rest_sdk_1.Octane.operationTypes.get)).data[0].name;
 });
 OctaneClient.getJobBuilds = (jobId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield _a.octane
+    return (yield _a.octane
         .get('ci_builds')
         .fields('start_time')
         .query(query_1.default.field('ci_job').equal(query_1.default.field('ci_id').equal(jobId)).build())
-        .execute();
+        .execute()).data;
 });
 OctaneClient.sendScmData = (scmData, instanceId, jobId, buildId) => __awaiter(void 0, void 0, void 0, function* () {
     yield _a.octane.executeCustomRequest(`/api/shared_spaces/${_a.config.octaneSharedSpace}/scm-commits?instance-id=${instanceId}}&job-ci-id=${jobId}&build-ci-id=${buildId}`, alm_octane_js_rest_sdk_1.Octane.operationTypes.update, scmData);
