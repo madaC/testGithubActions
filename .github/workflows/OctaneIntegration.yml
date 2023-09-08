@@ -23,7 +23,7 @@ jobs:
         with:
           octaneUrl: 'http://mada-database.aws.swinfra.net:8080'
           octaneSharedSpace: 1001
-          octaneWorkspace: 1004
+          octaneWorkspace: 4003
           octaneClientId: ${{secrets.ALM_OCTANE_CLIENT_ID}}
           octaneClientSecret: ${{secrets.ALM_OCTANE_CLIENT_SECRET}}
           githubToken: ${{secrets.GITHUB_TOKEN}}
